@@ -1,29 +1,43 @@
+fetch("http://localhost:3000/ramens")
+  .then(res => res.json())
+  .then(data => data.forEach(ramen => {
+    const menu = document.querySelector("#ramen-menu");
+    const img = document.createElement("img")
+    img.src = ramen.image
+    menu.append(img)
+    img.addEventListener('click', (e) => {
+      const bigImg = document.querySelector(".detail-image")
+      bigImg.src = ramen.image
+      const name = document.querySelector(".name")
+      name.innerText = ramen.name
+      const restaurant = document.querySelector(".restaurant")
+      restaurant.innerText = ramen.restaurant
+      const rating = document.querySelector("#rating-display")
+      rating.innerText = ramen.rating
+      const comment = document.querySelector("#comment-display")
+      comment.innerText = ramen.comment
+    })
+  }))
 
 
-
-
-/*getElementById('date').innerHTML = new Date().toDateString();
-  
-/*
-form.addEventListener('submit', (e) =>{
-const form = document.querySelector('form');
-form.addEventListener('submit', (e) =>{
-form.addEventListener();
-ul.append(li);
-const button = document.createElement('button')
-
-form.reset();
-/*
-"new-name" = (Top Ramen, Red Ramen, Silk Ramen, Pung Ramen) 
-"new-restaurant" = (ABC Palace, LES Palace, Chef Palace, Rare Palace)
-"new-image"= ???
-"new-rating" (0,1,2,3,4,5)
-"new-comment"= ("it was great", "it was alright, "it was bad")
-
-document.addEventListener("click", function() {
-  myFunction(p1, p2);
-});
-
-document.addEventListener("mouseover", myFunction);
-document.addEventListener("click", someOtherFunction);
-document.addEventListener("mouseout", someOtherFunction);
+const form = document.querySelector("form")
+form.addEventListener("submit", formAction)
+function formAction(e) {
+  e.preventDefault()
+  const obj = {
+    name: e.target[0].value,
+    restaurant: e.target[1].value,
+    image: e.target[2].value,
+    rating: e.target[3].value,
+    comment: e.target[4].value
+  }
+  fetch("http://localhost:3000/ramens", {
+    method: 'POST',
+    headers: {
+      "Content-type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify(obj)
+  })
+  form.reset()
+}
